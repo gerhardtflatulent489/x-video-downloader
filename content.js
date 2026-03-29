@@ -281,13 +281,11 @@
       if (!info.hasVideo || !info.tweetId) continue;
       if (processedTweets.has(info.tweetId)) continue;
 
-      const rect = article.getBoundingClientRect();
-      if (rect.bottom < -200 || rect.top > window.innerHeight + 500) continue;
-
-      tweets.push({ ...info, rect, article });
+      // Accept ALL video tweets in the DOM — X's virtualized list only keeps
+      // nearby tweets anyway, so everything in the DOM is fair game
+      tweets.push({ ...info, article });
     }
 
-    tweets.sort((a, b) => a.rect.top - b.rect.top);
     return tweets;
   }
 
@@ -308,6 +306,31 @@
     const config = SCROLL_CONFIG[scrollSpeed] || SCROLL_CONFIG.medium;
     statusState = "running";
     let noNewCount = 0;
+    let lastDownloadedCount = 0;
+    let stuckSinceScroll = 0;
+
+    // Wait for new DOM content after scrolling
+    function waitForNewContent(timeout) {
+      return new Promise((resolve) => {
+        let resolved = false;
+        const obs = new MutationObserver(() => {
+          if (!resolved) {
+            resolved = true;
+            obs.disconnect();
+            // Give React a moment to finish rendering
+            setTimeout(resolve, 300);
+          }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+        setTimeout(() => {
+          if (!resolved) {
+            resolved = true;
+            obs.disconnect();
+            resolve();
+          }
+        }, timeout);
+      });
+    }
 
     while (running && downloaded < maxVideos) {
       const tweets = getVisibleVideoTweets();
@@ -340,7 +363,6 @@
             downloaded++;
             statusText = `Downloaded ${downloaded}/${maxVideos}`;
 
-            // Mark the button on this tweet as done if it exists
             const btn = tweet.article.querySelector(".xdl-btn");
             if (btn) {
               btn.classList.add("xdl-done");
@@ -356,18 +378,44 @@
 
       if (!running || downloaded >= maxVideos) break;
 
-      window.scrollBy({ top: config.distance, behavior: "smooth" });
-      statusText = `Scrolling... ${downloaded}/${maxVideos} downloaded`;
-      await sleep(config.interval);
+      // Always scroll forward
+      const scrollAmount = noNewCount > 2
+        ? Math.min(800 + noNewCount * 400, 5000)  // increasingly aggressive
+        : config.distance;
 
-      if (noNewCount > 3) {
-        console.log("[X-DL] No new video tweets, scrolling more... (attempt", noNewCount + ")");
-        window.scrollBy({ top: 1500, behavior: "instant" });
-        await sleep(2500);
+      window.scrollBy({ top: scrollAmount, behavior: noNewCount > 2 ? "instant" : "smooth" });
+      statusText = `Scrolling... ${downloaded}/${maxVideos} downloaded`;
+
+      if (noNewCount > 2) {
+        console.log("[X-DL] No new video tweets, aggressive scroll", scrollAmount + "px (attempt", noNewCount + ")");
+        // Wait for X to load new content (MutationObserver based)
+        await waitForNewContent(4000);
+      } else {
+        await sleep(config.interval);
       }
-      if (noNewCount > 20) {
-        console.log("[X-DL] No new video tweets after extended scrolling, stopping");
+
+      // Check if we're truly stuck (no progress at all for many attempts)
+      // vs just scrolling through non-video tweets (which is normal)
+      if (noNewCount > 50) {
+        console.log("[X-DL] No new video tweets after 50 scroll attempts, stopping");
         break;
+      }
+
+      // Detect if page has truly reached the end
+      const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 100;
+      if (atBottom && noNewCount > 5) {
+        // Try one more time — scroll to trigger lazy load
+        window.scrollBy({ top: -200, behavior: "instant" });
+        await sleep(500);
+        window.scrollBy({ top: 400, behavior: "instant" });
+        await waitForNewContent(3000);
+        stuckSinceScroll++;
+        if (stuckSinceScroll > 5) {
+          console.log("[X-DL] Reached end of page");
+          break;
+        }
+      } else {
+        stuckSinceScroll = 0;
       }
     }
 
