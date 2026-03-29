@@ -1,6 +1,8 @@
 # X Video Downloader - Chrome Extension
 
-**Bulk download videos from X (Twitter) with one click.** Auto-scroll your feed and save every video, or download individual videos with the built-in button on each tweet.
+**Bulk download videos from X (Twitter) with one click.** Auto-scroll your feed, bookmarks, or any timeline and save every video — or download individual videos with the built-in button on each tweet.
+
+Perfect for saving your bookmarked videos, archiving NSFW/18+ content before it disappears, or batch downloading from any X feed.
 
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen)](https://developer.chrome.com/docs/extensions/mv3/intro/)
@@ -12,12 +14,14 @@
 
 - **Download button on every video tweet** — A download button appears in the action bar of every tweet with a video. One click to save.
 - **Bulk auto-download** — Set a max number (e.g. 100), hit Start, and the extension scrolls your feed and downloads every video it finds.
+- **Download all bookmarked videos** — Navigate to your Bookmarks page, hit Start, and save every video you've bookmarked. Great for archiving content before tweets get deleted.
+- **Save NSFW / 18+ videos** — Works on age-restricted and sensitive content. Download adult content from your timeline or bookmarks for offline viewing.
 - **Smart file naming** — Videos are named using the tweet author and post text so you can identify them: `001_username_tweet text here.mp4`
 - **Highest quality** — Automatically selects the highest bitrate MP4 variant available.
 - **Adjustable scroll speed** — Slow, medium, or fast depending on your connection.
 - **Rate limit handling** — Auto-retries on Twitter API rate limits with exponential backoff.
-- **Works on For You & Following** — Operates on any X/Twitter timeline or feed page.
-- **No third-party services** — Everything runs locally using Twitter's own API. No data sent anywhere.
+- **Works everywhere on X** — For You, Following, Bookmarks, Likes, user profiles, search results, lists — any page with tweets.
+- **No third-party services** — Everything runs locally using Twitter's own API. No data sent anywhere. Your downloads are private.
 
 ## Screenshots
 
@@ -47,13 +51,20 @@ Set your max video count and scroll speed, then hit **Start Downloading** to bul
 4. Video saves to your `Downloads/x-videos/` folder
 
 ### Bulk Download Videos
-1. Navigate to your **For You** or **Following** feed on X
+1. Navigate to any X page with videos — **For You**, **Following**, **Bookmarks**, a user's **profile**, **Likes**, **search results**, etc.
 2. Click the extension icon in the toolbar
 3. Set the **max number of videos** to download
 4. Choose a **scroll speed** (slow is more reliable)
 5. Click **Start Downloading**
-6. The extension auto-scrolls your feed, finds video tweets, and downloads them
+6. The extension auto-scrolls the page, finds video tweets, and downloads them
 7. Click **Stop** at any time
+
+### Download All Bookmarked Videos
+1. Go to **x.com/i/bookmarks**
+2. Click the extension icon and set your max (e.g. 500)
+3. Hit **Start Downloading**
+4. Every bookmarked video gets saved to your `Downloads/x-videos/` folder
+5. Great for saving content before tweets get deleted or accounts go private
 
 ### File Naming
 
